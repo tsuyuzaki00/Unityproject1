@@ -3,23 +3,24 @@ using System.Collections;
 
 public class Player : MonoBehaviour {
 
-	private bool Inputmove = true;
+    public AudioClip sound01;
+
+    private bool Inputmove = true;
 
     private Animator _animator;
     private static readonly int MoveHash = Animator.StringToHash("Move");
     private static readonly int Attack1Hash = Animator.StringToHash("Attack1");
     private static readonly int AvoidanceHash = Animator.StringToHash("Avoidance");
     private static readonly int Attack2Hash = Animator.StringToHash("Attack2");
+    private static readonly int Jump = Animator.StringToHash("Jump");
 
     [SerializeField]
     private CollisionSensor _rightHand = null;
 
-    // Use this for initialization
     void Start () {
         _animator = GetComponent<Animator>();
     }
 	
-	// Update is called once per frame
 	void Update () {
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
@@ -49,11 +50,13 @@ public class Player : MonoBehaviour {
         _animator.SetBool(Attack1Hash, fire1);
         _animator.SetBool(AvoidanceHash, fire2);
         _animator.SetBool(Attack2Hash, fire3);
+        _animator.SetBool(Jump, jump);
 
 
         if (_rightHand.Target != null && fire1 == true)
         {
-            _rightHand.Target.GetComponent<Rigidbody>().AddForce(0,500,0, ForceMode.Impulse);
+            _rightHand.Target.GetComponent<Rigidbody>().AddForce(0,5,5, ForceMode.Impulse);
+            GetComponent<AudioSource>().PlayOneShot(sound01);
             Debug.Log("Hit");
         }
     }
