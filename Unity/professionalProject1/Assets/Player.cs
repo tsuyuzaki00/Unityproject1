@@ -17,6 +17,7 @@ public class Player : MonoBehaviour {
     [SerializeField]
     private CollisionSensor _rightHand = null;
 
+
     void Start () {
         _animator = GetComponent<Animator>();
     }
@@ -52,6 +53,10 @@ public class Player : MonoBehaviour {
         _animator.SetBool(Attack2Hash, fire3);
         _animator.SetBool(Jump, jump);
 
+        if (fire2 == true)
+        {
+            transform.Translate(0,0,2);
+        }
 
         if (_rightHand.Target != null && fire1 == true)
         {
