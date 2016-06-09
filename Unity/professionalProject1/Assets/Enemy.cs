@@ -16,7 +16,10 @@ public class Enemy : MonoBehaviour {
     }
 
     void Update() {
-        transform.LookAt(_player);
+
+        Vector3 target = _player.transform.position;
+        target.y = 1f;
+        transform.LookAt(target);
         Vector3 move = Vector3.forward;
         transform.Translate(move * speed * Time.deltaTime);
  }
