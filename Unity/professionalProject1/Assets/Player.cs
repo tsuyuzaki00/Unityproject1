@@ -6,9 +6,12 @@ public class Player : MonoBehaviour {
     [SerializeField]
     private float jumpPower = 0f;
 
+    public GameObject Enemy;
+
     public AudioClip sound01;
 
     private bool Inputmove = true;
+    private int count = 0;
 
     private Animator _animator;
     private static readonly int MoveHash = Animator.StringToHash("Move");
@@ -19,6 +22,8 @@ public class Player : MonoBehaviour {
 
     private float UpMove = 0.05f;
     private float DownMove = -0.05f;
+
+    public bool _jump = true;
 
     [SerializeField]
     private CollisionSensor _rightHand = null;
@@ -34,12 +39,12 @@ public class Player : MonoBehaviour {
     void Update() {
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
-        bool Y = Input.GetKey("joystick button 3");
-        bool B = Input.GetKey("joystick button 1");
-        bool X = Input.GetKey("joystick button 2");
+        bool Y = Input.GetKeyDown("joystick button 3");
+        bool B = Input.GetKeyDown("joystick button 1");
+        bool X = Input.GetKeyDown("joystick button 2");
         bool A = Input.GetKeyDown("joystick button 0");
-        bool R = Input.GetKey("joystick button 5");
-        bool L = Input.GetKey("joystick button 6");
+        bool R = Input.GetKeyDown("joystick button 5");
+        bool L = Input.GetKeyDown("joystick button 6");
 
         Inputmove = false;
         if (v < -0.2) {
@@ -66,27 +71,30 @@ public class Player : MonoBehaviour {
 
         if (B == true)
         {
-            UpMove = 0.1f;
-            DownMove = -0.1f;
-        }
 
+        }
+        
         if (_rightHand.Target != null && Y == true)
         {
-            _rightHand.Target.GetComponent<Rigidbody>().AddRelativeForce(Vector3.back * 5f, ForceMode.Impulse);
+            _rightHand.Target.GetComponent<Rigidbody>().AddRelativeForce(Vector3.back * 10f, ForceMode.Impulse);
             GetComponent<AudioSource>().PlayOneShot(sound01);
-            Debug.Log("Hit");
+            _rightHand.Target.GetComponent<Enemy>().DamageCount++;
         }
 
         if (_leftLeg.Target != null && X == true)
         {
-            _leftLeg.Target.GetComponent<Rigidbody>().AddRelativeForce(Vector3.back * 5f, ForceMode.Impulse);
-            Debug.Log("Hit");
+            _leftLeg.Target.GetComponent<Rigidbody>().AddRelativeForce(Vector3.back * 10f, ForceMode.Impulse);
+            _leftLeg.Target.GetComponent<Enemy>().DamageCount++;
         }
 
-        if (A == true)
+        if (A == true && _jump == true)
         {
-           GetComponent<Rigidbody>().AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
+            GetComponent<Rigidbody>().AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
+            _jump = false;
         }
+
     }
+    
+
 
 }
