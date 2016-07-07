@@ -7,7 +7,9 @@ public class CollisionSensor : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.gameObject.name == "Stage") { return; }
         Target = other.gameObject;
+        
     }
 
     private void OnTriggerExit(Collider other)
