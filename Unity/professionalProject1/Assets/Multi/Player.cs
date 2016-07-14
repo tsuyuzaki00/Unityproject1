@@ -144,7 +144,7 @@ public class Player : MonoBehaviour
 
         if (A == true && _jump == true)
         {
-            GetComponent<Rigidbody>().AddForce(Vector3.up * _jumpPower, ForceMode.Impulse);
+            Rigidbody.AddForce(Vector3.up * _jumpPower, ForceMode.Impulse);
             _jump = false;
         }
     }
