@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Player : MonoBehaviour {
+public class Player_4P : MonoBehaviour {
 
     [SerializeField]
     private float jumpPower = 0f;
@@ -14,7 +14,6 @@ public class Player : MonoBehaviour {
     private int count = 0;
 
     private Animator _animator;
-    private AudioSource _sound1;
     private static readonly int MoveHash = Animator.StringToHash("Move");
     private static readonly int Attack1Hash = Animator.StringToHash("Attack1");
     private static readonly int AvoidanceHash = Animator.StringToHash("Avoidance");
@@ -33,37 +32,46 @@ public class Player : MonoBehaviour {
 
     Rigidbody rg;
 
-    void Start () {
+    void Start()
+    {
         _animator = GetComponent<Animator>();
-        _sound1 = GetComponent<AudioSource>();
     }
 
-    void Update() {
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
-        bool Y = Input.GetKeyDown("joystick button 3");
-        bool B = Input.GetKeyDown("joystick button 1");
-        bool X = Input.GetKeyDown("joystick button 2");
-        bool A = Input.GetKeyDown("joystick button 0");
-        bool R = Input.GetKeyDown("joystick button 5");
-        bool L = Input.GetKeyDown("joystick button 6");
+    void Update()
+    {
+        float h = Input.GetAxis("4P_Horizontal");
+        float v = Input.GetAxis("4P_Vertical");
+        bool Y = Input.GetKeyDown("joystick 4 button 3");
+        bool B = Input.GetKeyDown("joystick 4 button 1");
+        bool X = Input.GetKeyDown("joystick 4 button 2");
+        bool A = Input.GetKeyDown("joystick 4 button 0");
+        bool R = Input.GetKeyDown("joystick 4 button 5");
+        bool L = Input.GetKeyDown("joystick 4 button 6");
 
         Inputmove = false;
-        if (v < -0.2) {
+        if (v < -0.2)
+        {
             transform.Translate(0, 0, UpMove, Space.World);
             Inputmove = true;
-        } else if (v > 0.2) {
+        }
+        else if (v > 0.2)
+        {
             transform.Translate(0, 0, DownMove, Space.World);
             Inputmove = true;
-        } if (h < -0.2) {
+        }
+        if (h < -0.2)
+        {
             transform.Translate(DownMove, 0, 0, Space.World);
             Inputmove = true;
-        } else if (h > 0.2) {
+        }
+        else if (h > 0.2)
+        {
             transform.Translate(UpMove, 0, 0, Space.World);
             Inputmove = true;
         }
 
-        if (Inputmove) {
+        if (Inputmove)
+        {
             transform.LookAt(new Vector3(h, 0, -v) + (transform.position));
         }
 
@@ -73,32 +81,30 @@ public class Player : MonoBehaviour {
         _animator.SetBool(Attack2Hash, X);
         _animator.SetBool(Jump, A);
 
-        if (B == true)
-        {
-
-        }
-        
-        if (_rightHand.Target != null && Y == true)
-        {
-            _rightHand.Target.GetComponent<Rigidbody>().AddRelativeForce(Vector3.back * 10f, ForceMode.Impulse);
-            _sound1.PlayOneShot(sound01);
-            _rightHand.Target.GetComponent<Enemy>().DamageCount++;
-        }
-
-        if (_leftLeg.Target != null && X == true)
-        {
-            _leftLeg.Target.GetComponent<Rigidbody>().AddRelativeForce(Vector3.back * 10f, ForceMode.Impulse);
-            _leftLeg.Target.GetComponent<Enemy>().DamageCount++;
-        }
-
-        if (A == true && _jump == true)
-        {
-            GetComponent<Rigidbody>().AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
-            _jump = false;
-        }
-
+//        if (B == true)
+//        {
+//
+//        }
+//
+//        if (_rightHand.Target != null && Y == true)
+//        {
+//            _rightHand.Target.GetComponent<Rigidbody>().AddRelativeForce(Vector3.back * 10f, ForceMode.Impulse);
+//            GetComponent<AudioSource>().PlayOneShot(sound01);
+//            _rightHand.Target.GetComponent<Enemy>().DamageCount++;
+//        }
+//
+//        if (_leftLeg.Target != null && X == true)
+//        {
+//            _leftLeg.Target.GetComponent<Rigidbody>().AddRelativeForce(Vector3.back * 10f, ForceMode.Impulse);
+//            Debug.Log(_leftLeg.Target);
+//            _leftLeg.Target.GetComponent<Enemy>().DamageCount++;
+//        }
+//
+//        if (A == true && _jump == true)
+//        {
+//            GetComponent<Rigidbody>().AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
+//            _jump = false;
+//        }
+//
     }
-    
-
-
 }
