@@ -1,17 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Player_3P : MonoBehaviour {
+public class Player : MonoBehaviour
+{
 
     [SerializeField]
-    private float jumpPower = 0f;
+    private PlayerNumber _playerNumber;
 
-    public GameObject Enemy;
+    [SerializeField]
+    private float _jumpPower = 0f;
 
-    public AudioClip sound01;
+    public GameObject _enemy;
 
-    private bool Inputmove = true;
-    private int count = 0;
+    public AudioClip _punched;
+
+    private bool _inputmove = true;
+    private int _count = 0;
 
     private Animator _animator;
     private static readonly int MoveHash = Animator.StringToHash("Move");
@@ -20,8 +24,8 @@ public class Player_3P : MonoBehaviour {
     private static readonly int Attack2Hash = Animator.StringToHash("Attack2");
     private static readonly int Jump = Animator.StringToHash("Jump");
 
-    private float UpMove = 0.05f;
-    private float DownMove = -0.05f;
+    private float _upMove = 0.05f;
+    private float _downMove = -0.05f;
 
     public bool _jump = true;
 
@@ -30,7 +34,7 @@ public class Player_3P : MonoBehaviour {
     [SerializeField]
     private CollisionSensor _leftLeg = null;
 
-    Rigidbody rg;
+    Rigidbody _rg;
 
     void Start()
     {
@@ -39,43 +43,44 @@ public class Player_3P : MonoBehaviour {
 
     void Update()
     {
-        float h = Input.GetAxis("3P_Horizontal");
-        float v = Input.GetAxis("3P_Vertical");
-        bool Y = Input.GetKeyDown("joystick 3 button 3");
-        bool B = Input.GetKeyDown("joystick 3 button 1");
-        bool X = Input.GetKeyDown("joystick 3 button 2");
-        bool A = Input.GetKeyDown("joystick 3 button 0");
-        bool R = Input.GetKeyDown("joystick 3 button 5");
-        bool L = Input.GetKeyDown("joystick 3 button 6");
+        float H = Input.GetAxis(((int) _playerNumber) + "P_Horizontal");
+        float V = Input.GetAxis(((int) _playerNumber) + "P_Vertical");
+        bool Y = Input.GetKeyDown("joystick " + ((int) _playerNumber) + " button 3");
+        bool B = Input.GetKeyDown("joystick " + ((int) _playerNumber) + " button 1");
+        bool X = Input.GetKeyDown("joystick " + ((int) _playerNumber) + " button 2");
+        bool A = Input.GetKeyDown("joystick " + ((int) _playerNumber) + " button 0");
+        bool R = Input.GetKeyDown("joystick " + ((int) _playerNumber) + " button 5");
+        bool L = Input.GetKeyDown("joystick " + ((int) _playerNumber) + " button 6");
 
-        Inputmove = false;
-        if (v < -0.2)
+        Debug.Log(Input.GetAxis(((int)_playerNumber) + "P_Horizontal"));
+        _inputmove = false;
+        if (V < -0.2)
         {
-            transform.Translate(0, 0, UpMove, Space.World);
-            Inputmove = true;
+            transform.Translate(0, 0, _upMove, Space.World);
+            _inputmove = true;
         }
-        else if (v > 0.2)
+        else if (V > 0.2)
         {
-            transform.Translate(0, 0, DownMove, Space.World);
-            Inputmove = true;
+            transform.Translate(0, 0, _downMove, Space.World);
+            _inputmove = true;
         }
-        if (h < -0.2)
+        if (H < -0.2)
         {
-            transform.Translate(DownMove, 0, 0, Space.World);
-            Inputmove = true;
+            transform.Translate(_downMove, 0, 0, Space.World);
+            _inputmove = true;
         }
-        else if (h > 0.2)
+        else if (H > 0.2)
         {
-            transform.Translate(UpMove, 0, 0, Space.World);
-            Inputmove = true;
-        }
-
-        if (Inputmove)
-        {
-            transform.LookAt(new Vector3(h, 0, -v) + (transform.position));
+            transform.Translate(_upMove, 0, 0, Space.World);
+            _inputmove = true;
         }
 
-        _animator.SetBool(MoveHash, Inputmove);
+        if (_inputmove)
+        {
+            transform.LookAt(new Vector3(H, 0, -V) + (transform.position));
+        }
+
+        _animator.SetBool(MoveHash, _inputmove);
         _animator.SetBool(Attack1Hash, Y);
         _animator.SetBool(AvoidanceHash, B);
         _animator.SetBool(Attack2Hash, X);
@@ -105,6 +110,5 @@ public class Player_3P : MonoBehaviour {
 //            GetComponent<Rigidbody>().AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
 //            _jump = false;
 //        }
-//
     }
 }

@@ -13,8 +13,8 @@ public class PlayerMove : MonoBehaviour {
 	}
 	
 	void Update () {
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
+        float h = Input.GetAxis("1P_Horizontal");
+        float v = Input.GetAxis("1P_Vertical");
 
         Inputmove = false;
         if (v < -0.2)
