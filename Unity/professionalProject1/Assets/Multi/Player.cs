@@ -1,8 +1,18 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class Player : MonoBehaviour
 {
+    #region 定数
+
+    private static readonly int MoveHash = Animator.StringToHash("Move");
+    private static readonly int Attack1Hash = Animator.StringToHash("Attack1");
+    private static readonly int AvoidanceHash = Animator.StringToHash("Avoidance");
+    private static readonly int Attack2Hash = Animator.StringToHash("Attack2");
+    private static readonly int Jump = Animator.StringToHash("Jump");
+
+    #endregion
+
+    #region SerializeField
 
     [SerializeField]
     private PlayerNumber _playerNumber;
@@ -10,36 +20,65 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _jumpPower = 0f;
 
-    public GameObject _enemy;
+    [SerializeField]
+    private CollisionSensor _rightHand = null;
 
+    [SerializeField]
+    private CollisionSensor _leftLeg = null;
+
+    #endregion
+
+    #region Components
+
+    private Animator _animator;
+    public Animator Animator
+    {
+        get
+        {
+            if (_animator == null)
+            {
+                _animator = GetComponent<Animator>();
+            }
+            return _animator;
+        }
+    }
+
+    private Rigidbody _rigidbody;
+    public Rigidbody Rigidbody
+    {
+        get
+        {
+            if (_rigidbody == null)
+            {
+                _rigidbody = GetComponent<Rigidbody>();
+            }
+            return _rigidbody;
+        }
+    }
+
+    private AudioSource _audioSource;
+    public AudioSource AudioSource
+    {
+        get
+        {
+            if (_audioSource == null)
+            {
+                _audioSource = GetComponent<AudioSource>();
+            }
+            return _audioSource;
+        }
+    }
+
+    #endregion
+
+    public GameObject _enemy;
     public AudioClip _punched;
 
     private bool _inputmove = true;
     private int _count = 0;
-
-    private Animator _animator;
-    private static readonly int MoveHash = Animator.StringToHash("Move");
-    private static readonly int Attack1Hash = Animator.StringToHash("Attack1");
-    private static readonly int AvoidanceHash = Animator.StringToHash("Avoidance");
-    private static readonly int Attack2Hash = Animator.StringToHash("Attack2");
-    private static readonly int Jump = Animator.StringToHash("Jump");
-
     private float _upMove = 0.05f;
     private float _downMove = -0.05f;
-
     public bool _jump = true;
-
-    [SerializeField]
-    private CollisionSensor _rightHand = null;
-    [SerializeField]
-    private CollisionSensor _leftLeg = null;
-
-    Rigidbody _rg;
-
-    void Start()
-    {
-        _animator = GetComponent<Animator>();
-    }
 
     void Update()
     {
@@ -52,7 +91,6 @@ public class Player : MonoBehaviour
         bool R = Input.GetKeyDown("joystick " + ((int) _playerNumber) + " button 5");
         bool L = Input.GetKeyDown("joystick " + ((int) _playerNumber) + " button 6");
 
-        Debug.Log(Input.GetAxis(((int)_playerNumber) + "P_Horizontal"));
         _inputmove = false;
         if (V < -0.2)
         {
@@ -80,35 +118,34 @@ public class Player : MonoBehaviour
             transform.LookAt(new Vector3(H, 0, -V) + (transform.position));
         }
 
-        _animator.SetBool(MoveHash, _inputmove);
-        _animator.SetBool(Attack1Hash, Y);
-        _animator.SetBool(AvoidanceHash, B);
-        _animator.SetBool(Attack2Hash, X);
-        _animator.SetBool(Jump, A);
+        Animator.SetBool(MoveHash, _inputmove);
+        Animator.SetBool(Attack1Hash, Y);
+        Animator.SetBool(AvoidanceHash, B);
+        Animator.SetBool(Attack2Hash, X);
+        Animator.SetBool(Jump, A);
 
-//        if (B == true)
-//        {
-//
-//        }
-//
-//        if (_rightHand.Target != null && Y == true)
-//        {
-//            _rightHand.Target.GetComponent<Rigidbody>().AddRelativeForce(Vector3.back * 10f, ForceMode.Impulse);
-//            GetComponent<AudioSource>().PlayOneShot(sound01);
-//            _rightHand.Target.GetComponent<Enemy>().DamageCount++;
-//        }
-//
-//        if (_leftLeg.Target != null && X == true)
-//        {
-//            _leftLeg.Target.GetComponent<Rigidbody>().AddRelativeForce(Vector3.back * 10f, ForceMode.Impulse);
-//            Debug.Log(_leftLeg.Target);
-//            _leftLeg.Target.GetComponent<Enemy>().DamageCount++;
-//        }
-//
-//        if (A == true && _jump == true)
-//        {
-//            GetComponent<Rigidbody>().AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
-//            _jump = false;
-//        }
+        if (B == true)
+        {
+
+        }
+
+        if (_rightHand.Target != null && Y == true)
+        {
+            _rightHand.Target.GetComponent<Rigidbody>().AddRelativeForce(Vector3.back * 10f, ForceMode.Impulse);
+            AudioSource.PlayOneShot(_punched);
+            _rightHand.Target.GetComponent<Enemy>().DamageCount++;
+        }
+
+        if (_leftLeg.Target != null && X == true)
+        {
+            _leftLeg.Target.GetComponent<Rigidbody>().AddRelativeForce(Vector3.back * 10f, ForceMode.Impulse);
+            _leftLeg.Target.GetComponent<Enemy>().DamageCount++;
+        }
+
+        if (A == true && _jump == true)
+        {
+            Rigidbody.AddForce(Vector3.up * _jumpPower, ForceMode.Impulse);
+            _jump = false;
+        }
     }
 }
