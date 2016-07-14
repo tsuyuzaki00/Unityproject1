@@ -91,7 +91,6 @@ public class Player : MonoBehaviour
         bool R = Input.GetKeyDown("joystick " + ((int) _playerNumber) + " button 5");
         bool L = Input.GetKeyDown("joystick " + ((int) _playerNumber) + " button 6");
 
-        Debug.Log(Input.GetAxis(((int)_playerNumber) + "P_Horizontal"));
         _inputmove = false;
         if (V < -0.2)
         {
