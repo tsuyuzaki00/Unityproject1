@@ -133,13 +133,13 @@ public class Player : MonoBehaviour
         {
             _rightHand.Target.GetComponent<Rigidbody>().AddRelativeForce(Vector3.back * 10f, ForceMode.Impulse);
             AudioSource.PlayOneShot(_punched);
-            _rightHand.Target.GetComponent<Enemy>().DamageCount++;
+            //_rightHand.Target.GetComponent<Enemy>().DamageCount++;
         }
 
         if (_leftLeg.Target != null && X == true)
         {
             _leftLeg.Target.GetComponent<Rigidbody>().AddRelativeForce(Vector3.back * 10f, ForceMode.Impulse);
-            _leftLeg.Target.GetComponent<Enemy>().DamageCount++;
+            //_leftLeg.Target.GetComponent<Enemy>().DamageCount++;
         }
 
         if (A == true && _jump == true)
