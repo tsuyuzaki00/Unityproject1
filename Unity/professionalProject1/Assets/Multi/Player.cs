@@ -16,6 +16,12 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     private PlayerNumber _playerNumber;
+    public PlayerNumber PlayerNumber { get { return _playerNumber; } }
+
+    [SerializeField]
+    private int _maxLife = 120;
+    public int MaxLife { get { return _maxLife; } }
+    public int Life { get; private set; }
 
     [SerializeField]
     private float _jumpPower = 0f;
@@ -80,16 +86,21 @@ public class Player : MonoBehaviour
     private float _downMove = -0.05f;
     public bool _jump = true;
 
+    public void Start()
+    {
+        Life = MaxLife;
+    }
+
     void Update()
     {
-        float H = Input.GetAxis(((int) _playerNumber) + "P_Horizontal");
-        float V = Input.GetAxis(((int) _playerNumber) + "P_Vertical");
-        bool Y = Input.GetKeyDown("joystick " + ((int) _playerNumber) + " button 3");
-        bool B = Input.GetKeyDown("joystick " + ((int) _playerNumber) + " button 1");
-        bool X = Input.GetKeyDown("joystick " + ((int) _playerNumber) + " button 2");
-        bool A = Input.GetKeyDown("joystick " + ((int) _playerNumber) + " button 0");
-        bool R = Input.GetKeyDown("joystick " + ((int) _playerNumber) + " button 5");
-        bool L = Input.GetKeyDown("joystick " + ((int) _playerNumber) + " button 6");
+        float H = Input.GetAxis(((int)_playerNumber) + "P_Horizontal");
+        float V = Input.GetAxis(((int)_playerNumber) + "P_Vertical");
+        bool Y = Input.GetKeyDown("joystick " + ((int)_playerNumber) + " button 3");
+        bool B = Input.GetKeyDown("joystick " + ((int)_playerNumber) + " button 1");
+        bool X = Input.GetKeyDown("joystick " + ((int)_playerNumber) + " button 2");
+        bool A = Input.GetKeyDown("joystick " + ((int)_playerNumber) + " button 0");
+        bool R = Input.GetKeyDown("joystick " + ((int)_playerNumber) + " button 5");
+        bool L = Input.GetKeyDown("joystick " + ((int)_playerNumber) + " button 6");
 
         _inputmove = false;
         if (V < -0.2)
@@ -134,6 +145,7 @@ public class Player : MonoBehaviour
             _rightHand.Target.GetComponent<Rigidbody>().AddRelativeForce(Vector3.back * 10f, ForceMode.Impulse);
             AudioSource.PlayOneShot(_punched);
             //_rightHand.Target.GetComponent<Enemy>().DamageCount++;
+            Life -= 10;
         }
 
         if (_leftLeg.Target != null && X == true)
