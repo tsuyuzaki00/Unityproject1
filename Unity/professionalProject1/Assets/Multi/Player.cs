@@ -142,15 +142,19 @@ public class Player : MonoBehaviour
 
         if (_rightHand.Target != null && Y == true)
         {
-            _rightHand.Target.GetComponent<Rigidbody>().AddRelativeForce(Vector3.back * 10f, ForceMode.Impulse);
+
+            _rightHand.Target = _rightHand.Target.transform.root.gameObject;
+                
+            _rightHand.Target.GetComponent<Rigidbody>().AddRelativeForce(Vector3.back * 5f, ForceMode.Impulse);
             AudioSource.PlayOneShot(_punched);
             //_rightHand.Target.GetComponent<Enemy>().DamageCount++;
-            Life -= 10;
+            _rightHand.Target.GetComponent<Player>().ReceiveDamage(10);
+            //Life -= 10;
         }
 
         if (_leftLeg.Target != null && X == true)
         {
-            _leftLeg.Target.GetComponent<Rigidbody>().AddRelativeForce(Vector3.back * 10f, ForceMode.Impulse);
+            _leftLeg.Target.GetComponent<Rigidbody>().AddRelativeForce(Vector3.back * 5f, ForceMode.Impulse);
             //_leftLeg.Target.GetComponent<Enemy>().DamageCount++;
         }
 
@@ -160,4 +164,14 @@ public class Player : MonoBehaviour
             _jump = false;
         }
     }
+
+    public void ReceiveDamage(int damage) {
+        Life -= damage;
+        if(Life < 0)
+        {
+            Life = 0;
+        }
+    }
+
+    //Debug.Log();
 }

@@ -22,6 +22,6 @@ public class Parameters : MonoBehaviour
         _lifeText.text = _player.Life + "/" + _player.MaxLife;
 
         RectTransform textRect = _lifeBar.GetComponent<RectTransform>();
-        textRect.sizeDelta = new Vector2(100.0f, 30.0f);
+        textRect.sizeDelta = new Vector2(_player.Life, 23.0f);
     }
 }
