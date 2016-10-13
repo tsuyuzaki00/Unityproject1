@@ -11,17 +11,11 @@ public class Parameters : MonoBehaviour
     private Text _title;
 
     [SerializeField]
-    private Text _lifeText;
-
-    [SerializeField]
-    private Image _lifeBar;
+    private Text _scoreText;
 
     public void Update()
     {
         _title.text = ((int)_player.PlayerNumber) + "Player";
-        _lifeText.text = _player.Life + "/" + _player.MaxLife;
-
-        RectTransform textRect = _lifeBar.GetComponent<RectTransform>();
-        textRect.sizeDelta = new Vector2(_player.Life, 23.0f);
+        _scoreText.text += 10;
     }
 }

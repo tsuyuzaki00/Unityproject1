@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+
 public class Player : MonoBehaviour
 {
     #region 定数
@@ -19,9 +20,7 @@ public class Player : MonoBehaviour
     public PlayerNumber PlayerNumber { get { return _playerNumber; } }
 
     [SerializeField]
-    private int _maxLife = 120;
-    public int MaxLife { get { return _maxLife; } }
-    public int Life { get; private set; }
+    public int _score { get; private set; }
 
     [SerializeField]
     private float _jumpPower = 0f;
@@ -31,6 +30,21 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     private CollisionSensor _leftLeg = null;
+
+    [SerializeField]
+    private GameObject _enemy;
+
+    [SerializeField]
+    private AudioClip _punched;
+
+    [SerializeField]
+    private bool _jump = true;
+
+    [SerializeField]
+    private GameObject _playerScore;
+
+    [SerializeField]
+    private Player _player;
 
     #endregion
 
@@ -77,30 +91,26 @@ public class Player : MonoBehaviour
 
     #endregion
 
-    public GameObject _enemy;
-    public AudioClip _punched;
-
     private bool _inputmove = true;
     private int _count = 0;
     private float _upMove = 0.05f;
     private float _downMove = -0.05f;
-    public bool _jump = true;
 
     public void Start()
     {
-        Life = MaxLife;
+
     }
 
     void Update()
     {
         float H = Input.GetAxis(((int)_playerNumber) + "P_Horizontal");
         float V = Input.GetAxis(((int)_playerNumber) + "P_Vertical");
-        bool Y = Input.GetKeyDown("joystick " + ((int)_playerNumber) + " button 3");
-        bool B = Input.GetKeyDown("joystick " + ((int)_playerNumber) + " button 1");
-        bool X = Input.GetKeyDown("joystick " + ((int)_playerNumber) + " button 2");
-        bool A = Input.GetKeyDown("joystick " + ((int)_playerNumber) + " button 0");
-        bool R = Input.GetKeyDown("joystick " + ((int)_playerNumber) + " button 5");
-        bool L = Input.GetKeyDown("joystick " + ((int)_playerNumber) + " button 6");
+        bool A4 = Input.GetKeyDown("joystick " + ((int)_playerNumber) + " button 3");
+        bool X2 = Input.GetKeyDown("joystick " + ((int)_playerNumber) + " button 1");
+        bool B3 = Input.GetKeyDown("joystick " + ((int)_playerNumber) + " button 2");
+        bool Y1 = Input.GetKeyDown("joystick " + ((int)_playerNumber) + " button 0");
+        bool R = Input.GetKeyDown("joystick " + ((int)_playerNumber) + " button 5") || Input.GetKeyDown("joystick " + ((int)_playerNumber) + " button 7");
+        bool L = Input.GetKey("joystick " + ((int)_playerNumber) + " button 6") || Input.GetKey("joystick " + ((int)_playerNumber) + " button 4");
 
         _inputmove = false;
         if (V < -0.2)
@@ -130,17 +140,17 @@ public class Player : MonoBehaviour
         }
 
         Animator.SetBool(MoveHash, _inputmove);
-        Animator.SetBool(Attack1Hash, Y);
-        Animator.SetBool(AvoidanceHash, B);
-        Animator.SetBool(Attack2Hash, X);
-        Animator.SetBool(Jump, A);
+        Animator.SetBool(Attack1Hash, Y1);
+        Animator.SetBool(AvoidanceHash, B3);
+        Animator.SetBool(Attack2Hash, X2);
+        Animator.SetBool(Jump, A4);
 
-        if (B == true)
+        if (B3 == true)
         {
 
         }
 
-        if (_rightHand.Target != null && Y == true)
+        if (_rightHand.Target != null && Y1 == true)
         {
 
             _rightHand.Target = _rightHand.Target.transform.root.gameObject;
@@ -149,29 +159,43 @@ public class Player : MonoBehaviour
             AudioSource.PlayOneShot(_punched);
             //_rightHand.Target.GetComponent<Enemy>().DamageCount++;
             _rightHand.Target.GetComponent<Player>().ReceiveDamage(10);
-            //Life -= 10;
+            _score += 10;
         }
 
-        if (_leftLeg.Target != null && X == true)
+        if (_leftLeg.Target != null && X2 == true)
         {
             _leftLeg.Target.GetComponent<Rigidbody>().AddRelativeForce(Vector3.back * 5f, ForceMode.Impulse);
             //_leftLeg.Target.GetComponent<Enemy>().DamageCount++;
         }
 
-        if (A == true && _jump == true)
+        if (A4 == true && _jump == true)
         {
             Rigidbody.AddForce(Vector3.up * _jumpPower, ForceMode.Impulse);
             _jump = false;
         }
-    }
 
-    public void ReceiveDamage(int damage) {
-        Life -= damage;
-        if(Life < 0)
+        if (L == true)
         {
-            Life = 0;
+            Debug.Log("left");
+        }
+
+        if (R == true)
+        {
+            Debug.Log("Right");
         }
     }
 
+    void OnCollitionEntar(Collider c)
+    {
+        if(c.gameObject.tag == "Score")
+        {
+            _playerScore.GetComponent<Parameters> ().Update();
+        }
+    }
+
+    public void ReceiveDamage(int damage)
+    {
+        _score += damage;
+    }
     //Debug.Log();
 }

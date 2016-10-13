@@ -10,7 +10,7 @@ public class BodySensor : MonoBehaviour {
     {
 
         if(other.tag == "Floor"){
-            player._jump = true;
+            //player. = true;
         }
     }
 }
