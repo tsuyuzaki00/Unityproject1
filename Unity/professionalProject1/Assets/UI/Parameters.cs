@@ -13,9 +13,12 @@ public class Parameters : MonoBehaviour
     [SerializeField]
     private Text _scoreText;
 
-    public void Update()
+    private int Score;
+
+    public void addScore(int s)
     {
         _title.text = ((int)_player.PlayerNumber) + "Player";
-        _scoreText.text += 10;
+        Score += s;
+        _scoreText.GetComponent<Text>().text = Score.ToString();
     }
 }

@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 
-
 public class Player : MonoBehaviour
 {
     #region 定数
@@ -23,28 +22,27 @@ public class Player : MonoBehaviour
     public int _score { get; private set; }
 
     [SerializeField]
-    private float _jumpPower = 0f;
+    private float _jumpPower = 5f;
 
     [SerializeField]
-    private CollisionSensor _rightHand = null;
+    private CollisionSensor _rightHand;
 
     [SerializeField]
     private CollisionSensor _leftLeg = null;
 
     [SerializeField]
-    private GameObject _enemy;
-
-    [SerializeField]
-    private AudioClip _punched;
+    private AudioClip _punchSE;
 
     [SerializeField]
     private bool _jump = true;
 
     [SerializeField]
-    private GameObject _playerScore;
+    private GameObject _attack_Power;
 
     [SerializeField]
-    private Player _player;
+    private GameObject _playerScore;
+
+
 
     #endregion
 
@@ -92,14 +90,8 @@ public class Player : MonoBehaviour
     #endregion
 
     private bool _inputmove = true;
-    private int _count = 0;
     private float _upMove = 0.05f;
     private float _downMove = -0.05f;
-
-    public void Start()
-    {
-
-    }
 
     void Update()
     {
@@ -150,25 +142,17 @@ public class Player : MonoBehaviour
 
         }
 
-        if (_rightHand.Target != null && Y1 == true)
+        if (Y1 == true)
         {
-
-            _rightHand.Target = _rightHand.Target.transform.root.gameObject;
-                
-            _rightHand.Target.GetComponent<Rigidbody>().AddRelativeForce(Vector3.back * 5f, ForceMode.Impulse);
-            AudioSource.PlayOneShot(_punched);
-            //_rightHand.Target.GetComponent<Enemy>().DamageCount++;
-            _rightHand.Target.GetComponent<Player>().ReceiveDamage(10);
-            _score += 10;
+            _attack_Power.GetComponent<Attack_Power>();
         }
 
-        if (_leftLeg.Target != null && X2 == true)
-        {
-            _leftLeg.Target.GetComponent<Rigidbody>().AddRelativeForce(Vector3.back * 5f, ForceMode.Impulse);
-            //_leftLeg.Target.GetComponent<Enemy>().DamageCount++;
-        }
+//            if (_leftLeg.Target != null && X2 == true)
+//        {
+//            _leftLeg.Target.GetComponent<Rigidbody>().AddRelativeForce(Vector3.back * 5f, ForceMode.Impulse);
+//        }
 
-        if (A4 == true && _jump == true)
+        if (A4 == true)
         {
             Rigidbody.AddForce(Vector3.up * _jumpPower, ForceMode.Impulse);
             _jump = false;
@@ -183,19 +167,19 @@ public class Player : MonoBehaviour
         {
             Debug.Log("Right");
         }
+
     }
 
-    void OnCollitionEntar(Collider c)
+    void OnTriggerEnter(Collider c)
     {
-        if(c.gameObject.tag == "Score")
+        bool Y1 = Input.GetKeyDown("joystick " + ((int)_playerNumber) + " button 0");
+
+        if (c.gameObject.tag == "Score" && Y1 == true)
         {
-            _playerScore.GetComponent<Parameters> ().Update();
+            Debug.Log("OK");
+            _playerScore.GetComponent<Parameters>().addScore(10);
+            AudioSource.PlayOneShot(_punchSE);
         }
     }
 
-    public void ReceiveDamage(int damage)
-    {
-        _score += damage;
-    }
-    //Debug.Log();
 }
