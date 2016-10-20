@@ -9,7 +9,9 @@ public class Attack_Power : MonoBehaviour {
     [SerializeField]
     private AudioClip _punchSE;
 
+    private int Puls;
     private AudioSource _audioSource;
+
     public AudioSource AudioSource
     {
         get
@@ -21,22 +23,23 @@ public class Attack_Power : MonoBehaviour {
             return _audioSource;
         }
     }
-    // Use this for initialization
-    void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
 
-	}
+    void Weak()
+    {
+        Puls += 10;
+    }
+
+    void Strong()
+    {
+        Puls += 20;
+    }
 
     void OnTriggerEnter(Collider c)
     {
         if (c.gameObject.tag == "Score")
         {
             Debug.Log("OK");
-            _playerScore.GetComponent<Parameters>().addScore(10);
+            _playerScore.GetComponent<Parameters>().addScore(Puls);
             AudioSource.PlayOneShot(_punchSE);
         }
     }

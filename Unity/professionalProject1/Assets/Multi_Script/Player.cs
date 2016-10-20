@@ -25,15 +25,6 @@ public class Player : MonoBehaviour
     private float _jumpPower = 5f;
 
     [SerializeField]
-    private CollisionSensor _rightHand;
-
-    [SerializeField]
-    private CollisionSensor _leftLeg = null;
-
-    [SerializeField]
-    private AudioClip _punchSE;
-
-    [SerializeField]
     private bool _jump = true;
 
     [SerializeField]
@@ -168,18 +159,6 @@ public class Player : MonoBehaviour
             Debug.Log("Right");
         }
 
-    }
-
-    void OnTriggerEnter(Collider c)
-    {
-        bool Y1 = Input.GetKeyDown("joystick " + ((int)_playerNumber) + " button 0");
-
-        if (c.gameObject.tag == "Score" && Y1 == true)
-        {
-            Debug.Log("OK");
-            _playerScore.GetComponent<Parameters>().addScore(10);
-            AudioSource.PlayOneShot(_punchSE);
-        }
     }
 
 }
