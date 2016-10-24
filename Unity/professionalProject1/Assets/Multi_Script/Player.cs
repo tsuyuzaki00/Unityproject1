@@ -135,13 +135,13 @@ public class Player : MonoBehaviour
 
         if (Y1 == true)
         {
-            _attack_Power.GetComponent<Attack_Power>();
+            _attack_Power.GetComponent<Attack_Power>().Weak();
         }
 
-//            if (_leftLeg.Target != null && X2 == true)
-//        {
-//            _leftLeg.Target.GetComponent<Rigidbody>().AddRelativeForce(Vector3.back * 5f, ForceMode.Impulse);
-//        }
+        if (X2 == true)
+        {
+            _attack_Power.GetComponent<Attack_Power>().Strong();
+        }
 
         if (A4 == true)
         {

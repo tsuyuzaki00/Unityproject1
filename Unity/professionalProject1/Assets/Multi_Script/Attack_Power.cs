@@ -24,14 +24,14 @@ public class Attack_Power : MonoBehaviour {
         }
     }
 
-    void Weak()
+    public void Weak()
     {
-        Puls += 10;
+        Puls = 10;
     }
 
-    void Strong()
+    public void Strong()
     {
-        Puls += 20;
+        Puls = 20;
     }
 
     void OnTriggerEnter(Collider c)
