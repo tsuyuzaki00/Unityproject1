@@ -41,6 +41,7 @@ public class Attack_Power : MonoBehaviour {
             Debug.Log("OK");
             _playerScore.GetComponent<Parameters>().addScore(Puls);
             AudioSource.PlayOneShot(_punchSE);
+            Puls = 0;
         }
     }
 }

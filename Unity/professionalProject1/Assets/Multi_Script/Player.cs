@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
     private float _jumpPower = 5f;
 
     [SerializeField]
-    private bool _jump = true;
+    private bool _jump = false;
 
     [SerializeField]
     private GameObject _attack_Power;
@@ -136,17 +136,19 @@ public class Player : MonoBehaviour
         if (Y1 == true)
         {
             _attack_Power.GetComponent<Attack_Power>().Weak();
+            Debug.Log("Y1:"+Y1);
         }
 
         if (X2 == true)
         {
             _attack_Power.GetComponent<Attack_Power>().Strong();
+            Debug.Log("X2:" + X2);
+            X2 = false;
         }
 
         if (A4 == true)
         {
             Rigidbody.AddForce(Vector3.up * _jumpPower, ForceMode.Impulse);
-            _jump = false;
         }
 
         if (L == true)

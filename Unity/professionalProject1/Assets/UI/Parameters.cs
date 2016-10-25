@@ -14,10 +14,10 @@ public class Parameters : MonoBehaviour
 
     private int Score;
 
-    public void addScore(int s)
+    public void addScore(int Plus)
     {
         _title.text = ((int)_player.PlayerNumber) + "Player";
-        Score += s;
+        Score += Plus;
         _scoreText.GetComponent<Text>().text = Score.ToString();
     }
 }
