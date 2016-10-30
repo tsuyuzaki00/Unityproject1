@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Jump_Object : MonoBehaviour
+public class JumpObject : MonoBehaviour
 
 {
     [SerializeField]

@@ -4,10 +4,10 @@ public class Player : MonoBehaviour
 {
     #region 定数
 
-    private static readonly int MoveHash = Animator.StringToHash("Move");
-    private static readonly int Attack1Hash = Animator.StringToHash("Attack1");
-    private static readonly int AvoidanceHash = Animator.StringToHash("Avoidance");
-    private static readonly int Attack2Hash = Animator.StringToHash("Attack2");
+    private static readonly int MoveHash = Animator.StringToHash("Working");
+    private static readonly int PunchingHash = Animator.StringToHash("Punching");
+    private static readonly int AvoidanceHash = Animator.StringToHash("Rolling");
+    private static readonly int Attack2Hash = Animator.StringToHash("Kicking");
     private static readonly int Jump = Animator.StringToHash("Jump");
 
     #endregion
@@ -28,12 +28,16 @@ public class Player : MonoBehaviour
     private bool _jump = false;
 
     [SerializeField]
-    private GameObject _attack_Power;
+    private AttackSensor _rightHand;
 
     [SerializeField]
-    private GameObject _playerScore;
+    private AttackSensor _leftFoot;
 
+[SerializeField]
+    private GameObject _scoreText;
 
+    [SerializeField]
+    private AudioClip _attackSound = null;
 
     #endregion
 
@@ -123,44 +127,49 @@ public class Player : MonoBehaviour
         }
 
         Animator.SetBool(MoveHash, _inputmove);
-        Animator.SetBool(Attack1Hash, Y1);
+        Animator.SetBool(PunchingHash, Y1);
         Animator.SetBool(AvoidanceHash, B3);
         Animator.SetBool(Attack2Hash, X2);
         Animator.SetBool(Jump, A4);
 
-        if (B3 == true)
+        if (B3)
         {
 
         }
 
-        if (Y1 == true)
+        if (Y1)
         {
-            _attack_Power.GetComponent<Attack_Power>().Weak();
-            Debug.Log("Y1:"+Y1);
         }
 
-        if (X2 == true)
+        if (X2)
         {
-            _attack_Power.GetComponent<Attack_Power>().Strong();
-            Debug.Log("X2:" + X2);
-            X2 = false;
         }
 
-        if (A4 == true)
+        if (A4)
         {
             Rigidbody.AddForce(Vector3.up * _jumpPower, ForceMode.Impulse);
         }
 
-        if (L == true)
+        if (L)
         {
-            Debug.Log("left");
+
         }
 
-        if (R == true)
+        if (R)
         {
-            Debug.Log("Right");
+
         }
 
     }
 
+    public void Attack(AttackSensor sensor, GameObject gameObject)
+    {
+        var animationState = Animator.GetNextAnimatorStateInfo(0);
+        if (animationState.shortNameHash == PunchingHash)
+        {
+            AudioSource.PlayOneShot(_attackSound);
+            _scoreText.GetComponent<Parameters>().addScore(10);
+        }
+
+    }
 }
