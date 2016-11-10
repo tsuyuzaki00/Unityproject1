@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class Parameters : MonoBehaviour
+public class ScoreParameters : MonoBehaviour
 {
     [SerializeField]
     private Player _player;

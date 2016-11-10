@@ -168,7 +168,7 @@ public class Player : MonoBehaviour
         if (animationState.shortNameHash == PunchingHash)
         {
             AudioSource.PlayOneShot(_attackSound);
-            _scoreText.GetComponent<Parameters>().addScore(10);
+            _scoreText.GetComponent<ScoreParameters>().addScore(10);
         }
 
     }
