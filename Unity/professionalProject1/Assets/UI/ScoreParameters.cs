@@ -7,16 +7,18 @@ public class ScoreParameters : MonoBehaviour
     private Player _player;
 
     [SerializeField]
-    private Text _title;
+    private Text _playerText;
 
     [SerializeField]
     private Text _scoreText;
 
     private int Score;
 
+    public int GetScore() { return Score; }
+
     public void addScore(int Plus)
     {
-        _title.text = ((int)_player.PlayerNumber) + "Player";
+        _playerText.text = ((int)_player.PlayerNumber) + "Player";
         Score += Plus;
         _scoreText.GetComponent<Text>().text = Score.ToString();
     }

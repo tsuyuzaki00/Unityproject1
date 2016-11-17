@@ -2,8 +2,9 @@
 
 public class Player : MonoBehaviour
 {
-    #region 定数
 
+    #region 定数
+    private static readonly int DamageHash = Animator.StringToHash("Damege");
     private static readonly int MoveHash = Animator.StringToHash("Working");
     private static readonly int PunchingHash = Animator.StringToHash("Punching");
     private static readonly int AvoidanceHash = Animator.StringToHash("Rolling");
@@ -33,7 +34,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private AttackSensor _leftFoot;
 
-[SerializeField]
+    [SerializeField]
     private GameObject _scoreText;
 
     [SerializeField]
@@ -88,6 +89,13 @@ public class Player : MonoBehaviour
     private float _upMove = 0.05f;
     private float _downMove = -0.05f;
 
+    [SerializeField]
+    private float avoidanceMove = 0.07f;
+
+    void Start()
+    {
+        
+    }
     void Update()
     {
         float H = Input.GetAxis(((int)_playerNumber) + "P_Horizontal");
@@ -99,23 +107,31 @@ public class Player : MonoBehaviour
         bool R = Input.GetKeyDown("joystick " + ((int)_playerNumber) + " button 5") || Input.GetKeyDown("joystick " + ((int)_playerNumber) + " button 7");
         bool L = Input.GetKey("joystick " + ((int)_playerNumber) + " button 6") || Input.GetKey("joystick " + ((int)_playerNumber) + " button 4");
 
+
+
+        AnimatorStateInfo stateInfo = Animator.GetCurrentAnimatorStateInfo(0);
+        if (stateInfo.shortNameHash == AvoidanceHash)
+        {
+            transform.Translate(0, 0, avoidanceMove, Space.Self);
+        }
+        
         _inputmove = false;
-        if (V < -0.2)
+        if (V < -0.5)
         {
             transform.Translate(0, 0, _upMove, Space.World);
             _inputmove = true;
         }
-        else if (V > 0.2)
+        else if (V > 0.5)
         {
             transform.Translate(0, 0, _downMove, Space.World);
             _inputmove = true;
         }
-        if (H < -0.2)
+        if (H < -0.5)
         {
             transform.Translate(_downMove, 0, 0, Space.World);
             _inputmove = true;
         }
-        else if (H > 0.2)
+        else if (H > 0.5)
         {
             transform.Translate(_upMove, 0, 0, Space.World);
             _inputmove = true;
@@ -132,34 +148,16 @@ public class Player : MonoBehaviour
         Animator.SetBool(Attack2Hash, X2);
         Animator.SetBool(Jump, A4);
 
-        if (B3)
-        {
-
-        }
-
-        if (Y1)
-        {
-        }
-
-        if (X2)
-        {
-        }
+        if (B3){}
+        if (Y1){}
+        if (X2){}
+        if (L){}
+        if (R){}
 
         if (A4)
         {
             Rigidbody.AddForce(Vector3.up * _jumpPower, ForceMode.Impulse);
         }
-
-        if (L)
-        {
-
-        }
-
-        if (R)
-        {
-
-        }
-
     }
 
     public void Attack(AttackSensor sensor, GameObject gameObject)
@@ -169,6 +167,12 @@ public class Player : MonoBehaviour
         {
             AudioSource.PlayOneShot(_attackSound);
             _scoreText.GetComponent<ScoreParameters>().addScore(10);
+        }
+
+        if (animationState.shortNameHash == Attack2Hash)
+        {
+            AudioSource.PlayOneShot(_attackSound);
+            _scoreText.GetComponent<ScoreParameters>().addScore(20);
         }
 
     }
