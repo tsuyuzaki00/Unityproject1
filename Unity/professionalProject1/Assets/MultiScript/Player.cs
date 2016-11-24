@@ -8,7 +8,8 @@ public class Player : MonoBehaviour
     private static readonly int MoveHash = Animator.StringToHash("Working");
     private static readonly int PunchingHash = Animator.StringToHash("Punching");
     private static readonly int AvoidanceHash = Animator.StringToHash("Rolling");
-    private static readonly int Attack2Hash = Animator.StringToHash("Kicking");
+    private static readonly int KickingHash = Animator.StringToHash("Kicking");
+    private static readonly int DropkingHash = Animator.StringToHash("Dropking");
     private static readonly int Jump = Animator.StringToHash("Jump");
 
     #endregion
@@ -38,7 +39,15 @@ public class Player : MonoBehaviour
     private GameObject _scoreText;
 
     [SerializeField]
-    private AudioClip _attackSound = null;
+    private AudioClip _panchSound = null;
+
+    [SerializeField]
+    private AudioClip _kickSound = null;
+
+    [SerializeField]
+    private AudioClip _dropSound = null;
+
+
 
     #endregion
 
@@ -145,8 +154,8 @@ public class Player : MonoBehaviour
         Animator.SetBool(MoveHash, _inputmove);
         Animator.SetBool(PunchingHash, Y1);
         Animator.SetBool(AvoidanceHash, B3);
-        Animator.SetBool(Attack2Hash, X2);
-        Animator.SetBool(Jump, A4);
+        Animator.SetBool(KickingHash, X2);
+        Animator.SetBool(DropkingHash, A4);
 
         if (B3){}
         if (Y1){}
@@ -154,25 +163,28 @@ public class Player : MonoBehaviour
         if (L){}
         if (R){}
 
-        if (A4)
-        {
-            Rigidbody.AddForce(Vector3.up * _jumpPower, ForceMode.Impulse);
-        }
+        if (A4){}//Rigidbody.AddForce(Vector3.up * _jumpPower, ForceMode.Impulse);}
     }
 
     public void Attack(AttackSensor sensor, GameObject gameObject)
     {
-        var animationState = Animator.GetNextAnimatorStateInfo(0);
+        var animationState = Animator.GetCurrentAnimatorStateInfo(0);
         if (animationState.shortNameHash == PunchingHash)
         {
-            AudioSource.PlayOneShot(_attackSound);
+            AudioSource.PlayOneShot(_panchSound);
             _scoreText.GetComponent<ScoreParameters>().addScore(10);
         }
 
-        if (animationState.shortNameHash == Attack2Hash)
+        if (animationState.shortNameHash == KickingHash)
         {
-            AudioSource.PlayOneShot(_attackSound);
-            _scoreText.GetComponent<ScoreParameters>().addScore(20);
+            AudioSource.PlayOneShot(_kickSound);
+            _scoreText.GetComponent<ScoreParameters>().addScore(10);
+        }
+
+        if (animationState.shortNameHash == DropkingHash)
+        {
+            AudioSource.PlayOneShot(_dropSound);
+            _scoreText.GetComponent<ScoreParameters>().addScore(100);
         }
 
     }
