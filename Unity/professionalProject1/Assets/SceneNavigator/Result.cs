@@ -19,7 +19,7 @@ public class Result : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        bool A4 = Input.GetKeyDown("joystick " + ((int)_playerNumber) + " button 3");
+        bool A4 = Input.GetKeyDown("return");
         if (A4)
         {
             _scneeNavigator.Navigate(Scenes.Title);

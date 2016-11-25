@@ -18,6 +18,25 @@ public class Battle : MonoBehaviour
     [SerializeField]
     private ScoreParameters[] _scoreParameters;
 
+    [SerializeField]
+    private AudioClip _countSound = null;
+
+    [SerializeField]
+    private AudioClip _countdownSound = null;
+
+    private AudioSource _audioSource;
+    public AudioSource AudioSource
+    {
+        get
+        {
+            if (_audioSource == null)
+            {
+                _audioSource = GetComponent<AudioSource>();
+            }
+            return _audioSource;
+        }
+    }
+
     void Start()
     {
 
@@ -29,6 +48,15 @@ public class Battle : MonoBehaviour
 
         timer -= Time.deltaTime;
         TimerText.text = timer.ToString("N2");
+        if (timer == 60)
+        {
+            AudioSource.PlayOneShot(_countSound);
+        }
+
+        if (timer <= 10)
+        {
+            AudioSource.PlayOneShot(_countdownSound);
+        }
         if (timer <= 0.01)
         {
             _scoreParameters[0].GetScore();

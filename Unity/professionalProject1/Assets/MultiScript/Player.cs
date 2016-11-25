@@ -160,8 +160,6 @@ public class Player : MonoBehaviour
         Animator.SetBool(KickingHash, X2);
         Animator.SetBool(DropkingHash, A4);
 
-        Debug.Log(A4);
-
         if (B3){}
         if (Y1){}
         if (X2){}
@@ -183,17 +181,16 @@ public class Player : MonoBehaviour
         if (animationState.shortNameHash == KickingHash)
         {
             AudioSource.PlayOneShot(_kickSound);
-            _scoreText.GetComponent<ScoreParameters>().addScore(10);
-            transform.Translate(0, 0, 0.05f, Space.Self);
-        }
-        Debug.Log(animationState.shortNameHash);    
+            _scoreText.GetComponent<ScoreParameters>().addScore(20);
+            Rigidbody.AddForce(Vector3.forward * 0.07f, ForceMode.Impulse);
+        }    
 
         if (animationState.shortNameHash == DropkingHash)
         {
             AudioSource.PlayOneShot(_dropSound);
             _scoreText.GetComponent<ScoreParameters>().addScore(50);
-            _inputmove = false;
         }
+
 
     }
 }
