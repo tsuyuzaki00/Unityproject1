@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
     private static readonly int PunchingHash = Animator.StringToHash("Punching");
     private static readonly int AvoidanceHash = Animator.StringToHash("Rolling");
     private static readonly int KickingHash = Animator.StringToHash("Kicking");
-    private static readonly int DropkingHash = Animator.StringToHash("Dropking");
+    private static readonly int DropkingHash = Animator.StringToHash("Dropkick");
     private static readonly int Jump = Animator.StringToHash("Jump");
 
     #endregion
@@ -34,6 +34,9 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     private AttackSensor _leftFoot;
+
+    [SerializeField]
+    private AttackSensor _rightFoot;
 
     [SerializeField]
     private GameObject _scoreText;
@@ -157,6 +160,8 @@ public class Player : MonoBehaviour
         Animator.SetBool(KickingHash, X2);
         Animator.SetBool(DropkingHash, A4);
 
+        Debug.Log(A4);
+
         if (B3){}
         if (Y1){}
         if (X2){}
@@ -168,7 +173,7 @@ public class Player : MonoBehaviour
 
     public void Attack(AttackSensor sensor, GameObject gameObject)
     {
-        var animationState = Animator.GetCurrentAnimatorStateInfo(0);
+        var animationState = Animator.GetNextAnimatorStateInfo(0);
         if (animationState.shortNameHash == PunchingHash)
         {
             AudioSource.PlayOneShot(_panchSound);
@@ -179,12 +184,15 @@ public class Player : MonoBehaviour
         {
             AudioSource.PlayOneShot(_kickSound);
             _scoreText.GetComponent<ScoreParameters>().addScore(10);
+            transform.Translate(0, 0, 0.05f, Space.Self);
         }
+        Debug.Log(animationState.shortNameHash);    
 
         if (animationState.shortNameHash == DropkingHash)
         {
             AudioSource.PlayOneShot(_dropSound);
-            _scoreText.GetComponent<ScoreParameters>().addScore(100);
+            _scoreText.GetComponent<ScoreParameters>().addScore(50);
+            _inputmove = false;
         }
 
     }
