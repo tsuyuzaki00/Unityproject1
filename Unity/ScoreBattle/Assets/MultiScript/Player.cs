@@ -4,7 +4,7 @@ public class Player : MonoBehaviour
 {
 
     #region 定数
-    private static readonly int DamageHash = Animator.StringToHash("Damege");
+    //private static readonly int DamageHash = Animator.StringToHash("Damege");
     private static readonly int MoveHash = Animator.StringToHash("Working");
     private static readonly int PunchingHash = Animator.StringToHash("Punching");
     private static readonly int AvoidanceHash = Animator.StringToHash("Rolling");
@@ -182,13 +182,12 @@ public class Player : MonoBehaviour
         {
             AudioSource.PlayOneShot(_kickSound);
             _scoreText.GetComponent<ScoreParameters>().addScore(20);
-            Rigidbody.AddForce(Vector3.forward * 0.07f, ForceMode.Impulse);
         }    
 
         if (animationState.shortNameHash == DropkingHash)
         {
             AudioSource.PlayOneShot(_dropSound);
-            _scoreText.GetComponent<ScoreParameters>().addScore(50);
+            _scoreText.GetComponent<ScoreParameters>().addScore(30);
         }
 
 
