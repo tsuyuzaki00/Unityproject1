@@ -37,6 +37,8 @@ public class Battle : MonoBehaviour
         }
     }
 
+    private bool OneAudio = false;
+
     void Start()
     {
 
@@ -55,8 +57,13 @@ public class Battle : MonoBehaviour
 
         if (timer <= 10)
         {
-            AudioSource.PlayOneShot(_countdownSound);
+            if (OneAudio == false)
+            {
+                OneAudio = true;
+                AudioShot();
+            }
         }
+
         if (timer <= 0.01)
         {
             _scoreParameters[0].GetScore();
@@ -70,5 +77,10 @@ public class Battle : MonoBehaviour
             scoreDate.Sort();
             _scneeNavigator.Navigate(Scenes.Result);
         }
+    }
+
+    void AudioShot()
+    {
+        AudioSource.PlayOneShot(_countdownSound);
     }
 }

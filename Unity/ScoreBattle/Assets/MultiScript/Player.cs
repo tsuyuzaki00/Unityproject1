@@ -104,9 +104,11 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float avoidanceMove = 0.07f;
 
+    private Rigidbody rig;
+
     void Start()
     {
-        
+       rig = GetComponent<Rigidbody>();
     }
     void Update()
     {
@@ -176,20 +178,30 @@ public class Player : MonoBehaviour
         {
             AudioSource.PlayOneShot(_panchSound);
             _scoreText.GetComponent<ScoreParameters>().addScore(10);
+            gameObject.GetComponent<Player>().Blow(transform.forward*500);
         }
 
         if (animationState.shortNameHash == KickingHash)
         {
             AudioSource.PlayOneShot(_kickSound);
             _scoreText.GetComponent<ScoreParameters>().addScore(20);
+            gameObject.GetComponent<Player>().Blow((gameObject.transform.position-transform.position).normalized*1000);
         }    
 
         if (animationState.shortNameHash == DropkingHash)
         {
             AudioSource.PlayOneShot(_dropSound);
             _scoreText.GetComponent<ScoreParameters>().addScore(30);
+            gameObject.GetComponent<Player>().Blow(transform.up * 300);
+            gameObject.GetComponent<Player>().Blow(transform.forward * 1500);
+            
         }
 
 
+    }
+
+    public void Blow(Vector3 BlowingPower)
+    {
+        rig.AddForce(BlowingPower);
     }
 }
