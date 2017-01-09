@@ -192,8 +192,8 @@ public class Player : MonoBehaviour
         {
             AudioSource.PlayOneShot(_dropSound);
             _scoreText.GetComponent<ScoreParameters>().addScore(30);
-            gameObject.GetComponent<Player>().Blow(transform.up * 300);
-            gameObject.GetComponent<Player>().Blow(transform.forward * 1500);
+            gameObject.GetComponent<Player>().Blow(transform.up * 100);
+            gameObject.GetComponent<Player>().Blow(transform.forward * 1000);
             
         }
 
