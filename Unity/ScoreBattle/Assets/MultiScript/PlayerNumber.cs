@@ -7,3 +7,11 @@
     Four = 4
 }
 
+public enum PlayerSelect
+{
+    None = 0,
+    Player = 1,
+    NPC = 2
+}
+
+
