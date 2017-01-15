@@ -22,13 +22,6 @@ public class Cursor : MonoBehaviour
     {
         float H = Input.GetAxis(((int)_playerNumber) + "P_Horizontal");
         float V = Input.GetAxis(((int)_playerNumber) + "P_Vertical");
-        bool A4 = Input.GetKeyDown("joystick " + ((int)_playerNumber) + " button 3");
-        bool X2 = Input.GetKeyDown("joystick " + ((int)_playerNumber) + " button 1");
-        bool B3 = Input.GetKeyDown("joystick " + ((int)_playerNumber) + " button 2");
-        bool Y1 = Input.GetKeyDown("joystick " + ((int)_playerNumber) + " button 0");
-        bool R = Input.GetKeyDown("joystick " + ((int)_playerNumber) + " button 5") || Input.GetKeyDown("joystick " + ((int)_playerNumber) + " button 7");
-        bool L = Input.GetKey("joystick " + ((int)_playerNumber) + " button 6") || Input.GetKey("joystick " + ((int)_playerNumber) + " button 4");
-
 
         if (V < -0.5)
         {
@@ -46,15 +39,15 @@ public class Cursor : MonoBehaviour
         {
             transform.Translate(_upMove, 0, 0, Space.World);
         }
+    }
 
-        if (A4)
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        Debug.Log("aaa");
+        var playerSelection = collision.gameObject.GetComponent<PlayerSelection>();
+        if (playerSelection != null && Input.GetKeyDown("joystick button 3"))
         {
-
+            playerSelection.PlayerSelect = PlayerSelect.Player;
         }
-        if (B3) { }
-        if (Y1) { }
-        if (X2) { }
-        if (L) { }
-        if (R) { }
     }
 }
