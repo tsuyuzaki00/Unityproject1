@@ -7,6 +7,9 @@ public class Battle : MonoBehaviour
     private SceneNavigator _scneeNavigator;
 
     [SerializeField]
+    private GameObject prefab;
+
+    [SerializeField]
     private float timer = 120;
 
     [SerializeField]
@@ -38,10 +41,10 @@ public class Battle : MonoBehaviour
     }
 
     private bool OneAudio = false;
+    private float count;
 
     void Start()
     {
-
     }
 
     // Update is called once per frame
@@ -55,8 +58,16 @@ public class Battle : MonoBehaviour
             AudioSource.PlayOneShot(_countSound);
         }
 
+        count = timer % 10;
+
+        if (count <= 5 && count >= 4.5)
+        {
+            Instantiate(prefab, new Vector3(Random.Range(-7.0f, 7.0f), 5, Random.Range(-5.0f, 3.0f)), Quaternion.identity);
+        }
+
         if (timer <= 10)
         {
+            Instantiate(prefab, new Vector3(Random.Range(-7.0f, 7.0f), 7, Random.Range(-5.0f, 3.0f)), Quaternion.identity);
             if (OneAudio == false)
             {
                 OneAudio = true;
@@ -64,7 +75,8 @@ public class Battle : MonoBehaviour
             }
         }
 
-        if (timer <= 0.01)
+        bool Enter = Input.GetKeyDown("return");
+        if (timer <= 0.01 || Enter)
         {
             _scoreParameters[0].GetScore();
 

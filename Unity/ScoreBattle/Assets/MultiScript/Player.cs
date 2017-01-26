@@ -2,8 +2,8 @@
 
 public class Player : MonoBehaviour
 {
-
     #region 定数
+
     //private static readonly int DamageHash = Animator.StringToHash("Damege");
     private static readonly int MoveHash = Animator.StringToHash("Working");
     private static readonly int PunchingHash = Animator.StringToHash("Punching");
@@ -39,7 +39,7 @@ public class Player : MonoBehaviour
     private AttackSensor _rightFoot;
 
     [SerializeField]
-    private GameObject _scoreText;
+    private ScoreParameters _scoreText;
 
     [SerializeField]
     private AudioClip _panchSound = null;
@@ -49,8 +49,6 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     private AudioClip _dropSound = null;
-
-
 
     #endregion
 
@@ -157,51 +155,48 @@ public class Player : MonoBehaviour
         }
 
         Animator.SetBool(MoveHash, _inputmove);
-        Animator.SetBool(PunchingHash, Y1);
-        Animator.SetBool(AvoidanceHash, B3);
-        Animator.SetBool(KickingHash, X2);
-        Animator.SetBool(DropkingHash, A4);
-
-        if (B3){}
-        if (Y1){}
-        if (X2){}
-        if (L){}
-        if (R){}
-
-        if (A4){}//Rigidbody.AddForce(Vector3.up * _jumpPower, ForceMode.Impulse);}
+        Animator.SetBool(AvoidanceHash, B3||X2);
+        Animator.SetBool(DropkingHash, Y1||A4);
     }
 
-    public void Attack(AttackSensor sensor, GameObject gameObject)
+    public void Attack(AttackSensor sensor, Player player)
     {
         var animationState = Animator.GetNextAnimatorStateInfo(0);
         if (animationState.shortNameHash == PunchingHash)
         {
             AudioSource.PlayOneShot(_panchSound);
-            _scoreText.GetComponent<ScoreParameters>().addScore(10);
-            gameObject.GetComponent<Player>().Blow(transform.forward*500);
+            _scoreText.addScore(10);
+            player.Blow(transform.forward*500);
         }
 
         if (animationState.shortNameHash == KickingHash)
         {
             AudioSource.PlayOneShot(_kickSound);
-            _scoreText.GetComponent<ScoreParameters>().addScore(20);
-            gameObject.GetComponent<Player>().Blow((gameObject.transform.position-transform.position).normalized*1000);
+            _scoreText.addScore(20);
+            player.Blow((player.transform.position-transform.position).normalized*1000);
         }    
 
         if (animationState.shortNameHash == DropkingHash)
         {
             AudioSource.PlayOneShot(_dropSound);
-            _scoreText.GetComponent<ScoreParameters>().addScore(30);
-            gameObject.GetComponent<Player>().Blow(transform.up * 100);
-            gameObject.GetComponent<Player>().Blow(transform.forward * 1000);
-            
+            _scoreText.addScore(100);
+            player.Blow(transform.up * 100);
+            player.Blow(transform.forward * 1000);
         }
-
-
     }
 
     public void Blow(Vector3 BlowingPower)
     {
         rig.AddForce(BlowingPower);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        var coin = collision.gameObject.GetComponent<Coin>();
+        if (coin != null)
+        {
+            _scoreText.addScore(coin.Score);
+            Destroy(coin.gameObject);
+        }
     }
 }
