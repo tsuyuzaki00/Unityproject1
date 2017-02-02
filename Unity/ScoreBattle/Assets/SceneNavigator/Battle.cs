@@ -19,7 +19,7 @@ public class Battle : MonoBehaviour
     private GameObject scoreDatePrefab;
 
     [SerializeField]
-    private ScoreParameters[] _scoreParameters;
+    private ScoreParameter[] _scoreParameters;
 
     [SerializeField]
     private AudioClip _countSound = null;
@@ -78,14 +78,12 @@ public class Battle : MonoBehaviour
         bool Enter = Input.GetKeyDown("return");
         if (timer <= 0.01 || Enter)
         {
-            _scoreParameters[0].GetScore();
-
             var scoreDate =Instantiate(scoreDatePrefab).GetComponent<RankRemoval>();
             scoreDate.gameObject.name = "ScoreDate";
-            scoreDate.Add("1Player", _scoreParameters[0].GetScore());
-            scoreDate.Add("2Player", _scoreParameters[1].GetScore());
-            scoreDate.Add("3Player", _scoreParameters[2].GetScore());
-            scoreDate.Add("4Player", _scoreParameters[3].GetScore());
+            foreach(var scoreParameter in _scoreParameters)
+            {
+                scoreDate.Add(((int)scoreParameter.Player.PlayerNumber) + "Player", scoreParameter.Score);
+            }
             scoreDate.Sort();
             _scneeNavigator.Navigate(Scenes.Result);
         }

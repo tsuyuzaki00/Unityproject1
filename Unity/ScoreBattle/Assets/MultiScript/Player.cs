@@ -39,7 +39,7 @@ public class Player : MonoBehaviour
     private AttackSensor _rightFoot;
 
     [SerializeField]
-    private ScoreParameters _scoreText;
+    private ScoreParameter _scoreText;
 
     [SerializeField]
     private AudioClip _panchSound = null;
@@ -92,6 +92,8 @@ public class Player : MonoBehaviour
             return _audioSource;
         }
     }
+
+    public Vector3 position { get; internal set; }
 
     #endregion
 
@@ -156,7 +158,7 @@ public class Player : MonoBehaviour
 
         Animator.SetBool(MoveHash, _inputmove);
         Animator.SetBool(AvoidanceHash, B3||X2);
-        Animator.SetBool(DropkingHash, Y1||A4);
+        Animator.SetBool(PunchingHash, Y1||A4);
     }
 
     public void Attack(AttackSensor sensor, Player player)
@@ -165,21 +167,21 @@ public class Player : MonoBehaviour
         if (animationState.shortNameHash == PunchingHash)
         {
             AudioSource.PlayOneShot(_panchSound);
-            _scoreText.addScore(10);
+            _scoreText.Score += 10;
             player.Blow(transform.forward*500);
         }
 
         if (animationState.shortNameHash == KickingHash)
         {
             AudioSource.PlayOneShot(_kickSound);
-            _scoreText.addScore(20);
+            _scoreText.Score += 20;
             player.Blow((player.transform.position-transform.position).normalized*1000);
         }    
 
         if (animationState.shortNameHash == DropkingHash)
         {
             AudioSource.PlayOneShot(_dropSound);
-            _scoreText.addScore(100);
+            _scoreText.Score += 100;
             player.Blow(transform.up * 100);
             player.Blow(transform.forward * 1000);
         }
@@ -195,7 +197,7 @@ public class Player : MonoBehaviour
         var coin = collision.gameObject.GetComponent<Coin>();
         if (coin != null)
         {
-            _scoreText.addScore(coin.Score);
+            _scoreText.Score += coin.Score;
             Destroy(coin.gameObject);
         }
     }
